@@ -13,27 +13,47 @@ m = |x|y - |xy
 
 b = |y - m|x
 
+OR
+
+ m = 1/n∑x * 1/n∑y - 1/n∑xy
+    ________________________ =
+    (1/n∑x)^2 - 1/n∑x^2
+
+
+    1/n^2∑x∑y - 1/n∑xy
+    _________________________ =
+    1/n^2(∑x)^2 - 1/n∑x^2
+
+
+    1/n^2(∑x∑y - n∑xy)
+    __________________________ =
+    1/n^2((∑x)^2 - n∑x^2)
+
+    (∑x∑y - n∑xy)
+    __________________________ 
+    ((∑x)^2 - n∑x^2)
+
 
 
 */
 
 object LR {
   case class Point(x: Double, y:Double)
-  case class Means(mx: Double, my: Double, mxy: Double, mxsq: Double)
+  case class MeanFactors(x: Double, y: Double, xy: Double, xsq: Double)
 
 
-  def means(points: List[Point]): Means = {
-    val n = points.size
+  def meanFactors(points: List[Point]): MeanFactors = {
     val foldedT = points.foldLeft((0.0, 0.0, 0.0, 0.0))((a, v) => (a._1+v.x, a._2+v.y, a._3 + (v.x*v.y), a._4 + (v.x * v.x))) 
 
-    Means(foldedT._1/n, foldedT._2/n, foldedT._3/n, foldedT._4/n)
+    MeanFactors(foldedT._1, foldedT._2, foldedT._3, foldedT._4)
   }
 
   def optimizedFit(points: List[Point]) : (Double, Double) = {
-    val meanz = means(points)
-    println(meanz.toString)
-    val m = (meanz.mx*meanz.my - meanz.mxy) / (meanz.mx * meanz.mx - meanz.mxsq)
-    val b = meanz.my - m*meanz.mx
+    val n = points.size
+    val meanFactorz = meanFactors(points)
+    println(meanFactorz.toString)
+    val m = (meanFactorz.x*meanFactorz.y - n*meanFactorz.xy) / (meanFactorz.x * meanFactorz.x - n*meanFactorz.xsq)
+    val b = (1.0/n)*(meanFactorz.y - m*meanFactorz.x)
 
     (m, b)
    }
