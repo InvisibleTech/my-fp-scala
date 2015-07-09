@@ -5,6 +5,21 @@ case object Nil extends List[Nothing]
 case class Cons[+A](head: A, tail: List[A]) extends List[A]
 
 object List {
+  def foldRight[A, B](ls: List[A], z: B)(f: (A, B) => B) : B = ls match {
+    case Nil => z
+    case Cons(h, t) => f(h, foldRight(t, z)(f))
+  }
+
+  def intListFactory(as: Int*) : List[Int] = {
+    // redundant but proving an idea about why foldRight is so generic.
+
+    List.foldRight(List(as: _*), Nil.asInstanceOf[List[Int]])((x, z) => Cons(x, z))
+  }
+
+  def sum2(ints: List[Int]) : Int = foldRight(ints, 0)(_ + _)
+
+  def prod2(dubs: List[Double]) : Double = foldRight(dubs, 1.0)(_ * _)
+
   def sum(ints: List[Int]): Int = ints match {
       case Nil => 0
       case Cons(h, t) => h + sum(t)
@@ -12,7 +27,6 @@ object List {
 
   def product(doubles: List[Double]): Double = doubles match {
     case Nil => 1.0
-    case Cons(0.0, _) => 0.0
     case Cons(h, t) => h * product(t)
   }
 
@@ -33,10 +47,9 @@ object List {
   }
 
 
-  def dropWhile[A](l: List[A], f: A => Boolean): List[A] = {
+  def dropWhile[A](l: List[A])(f: A => Boolean): List[A] = {
     l match {
-      case Nil => Nil
-      case Cons(h, t) if f(h) => dropWhile(t, f)
+      case Cons(h, t) if f(h) => dropWhile(t)(f)
       case _ => l
     }
   }
