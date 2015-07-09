@@ -13,8 +13,10 @@ object List {
   def intListFactory(as: Int*) : List[Int] = {
     // redundant but proving an idea about why foldRight is so generic.
 
-    List.foldRight(List(as: _*), Nil.asInstanceOf[List[Int]])((x, z) => Cons(x, z))
+    List.foldRight(List(as: _*), Nil:List[Int])(Cons(_, _))
   }
+
+  def length[A](l : List[A]) : Int = List.foldRight(l, 0)((_, acc) => acc + 1)
 
   def sum2(ints: List[Int]) : Int = foldRight(ints, 0)(_ + _)
 
