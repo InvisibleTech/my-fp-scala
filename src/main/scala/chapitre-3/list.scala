@@ -10,27 +10,29 @@ object List {
     case Cons(h, t) => f(h, foldRight(t, z)(f))
   }
 
+  @annotation.tailrec
+  def foldLeft[A,B](ls: List[A], z: B)(f: (B, A) => B) : B = ls match {
+      case Nil => z
+      case Cons(h, t) => foldLeft(t, f(z, h))(f)
+  }
+
+  def foldRightViaFoldLeft[A, B](ls: List[A], z: B)(f: (A, B) => B) : B =  foldLeft(reverse(ls), z)((acc, h) => f(h, acc))
+
+  def foldRightViaFoldLeft_NoReverse[A,B](ls: List[A], z: B)(f: (A,B) => B): B = 
+      foldLeft(ls, (b:B) => b) ((g,a) => b => g(f(a,b))) (z)
+
   def intListFactory(as: Int*) : List[Int] = {
     // redundant but proving an idea about why foldRight is so generic.
-
     List.foldRight(List(as: _*), Nil:List[Int])(Cons(_, _))
   }
 
+  def reverse[A](ls: List[A]) : List[A] = List.foldLeft(ls, Nil:List[A])((acc, h) => Cons(h, acc))
+
   def length[A](l : List[A]) : Int = List.foldRight(l, 0)((_, acc) => acc + 1)
 
-  def sum2(ints: List[Int]) : Int = foldRight(ints, 0)(_ + _)
+  def sum(ints: List[Int]) : Int = foldRight(ints, 0)(_ + _)
 
-  def prod2(dubs: List[Double]) : Double = foldRight(dubs, 1.0)(_ * _)
-
-  def sum(ints: List[Int]): Int = ints match {
-      case Nil => 0
-      case Cons(h, t) => h + sum(t)
-  }
-
-  def product(doubles: List[Double]): Double = doubles match {
-    case Nil => 1.0
-    case Cons(h, t) => h * product(t)
-  }
+  def product(dubs: List[Double]) : Double = foldRight(dubs, 1.0)(_ * _)
 
   def apply[A](as: A*): List[A] = if (as.isEmpty) Nil else Cons(as.head, apply(as.tail: _*))
 
