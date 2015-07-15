@@ -10,16 +10,33 @@ object List {
     case Cons(h, t) => f(h, foldRight(t, z)(f))
   }
 
+  def foldLeftViaFoldRight[A,B](ls: List[A], z: B)(f: (B, A) => B) : B = foldRight(reverse(ls), z)((h, acc) => f(acc, h))
+
+  // From the author's site.
+  def foldLeftViaFoldRight_NoReverse[A,B](ls: List[A], z:B)(f: (B, A) => B) : B =
+    foldRight(ls, (b:B) => b)((a, g) => b => g(f(b, a))) (z)
+
+
+  // The goal is a function like this (et: Int) => Cons( 1, Cons(2, Cons(et, Nil)))
+  def appendFoldLeft[A](ls: List[A], rs: List[A]): List[A] = {
+    foldLeft(ls, (b:List[A]) => b)((g, a) => b => g(Cons(a, b))) (rs) 
+  }
+
   @annotation.tailrec
   def foldLeft[A,B](ls: List[A], z: B)(f: (B, A) => B) : B = ls match {
       case Nil => z
       case Cons(h, t) => foldLeft(t, f(z, h))(f)
   }
 
+  def appendFoldRight[A](ls: List[A], rs: List[A]) : List[A] = {
+    foldRight(ls, rs)(Cons(_, _))
+  }
+
   def foldRightViaFoldLeft[A, B](ls: List[A], z: B)(f: (A, B) => B) : B =  foldLeft(reverse(ls), z)((acc, h) => f(h, acc))
 
+  // From the author's site.
   def foldRightViaFoldLeft_NoReverse[A,B](ls: List[A], z: B)(f: (A,B) => B): B = 
-      foldLeft(ls, (b:B) => b) ((g,a) => b => g(f(a,b))) (z)
+    foldLeft(ls, (b:B) => b) ((g,a) => b => g(f(a,b))) (z)
 
   def intListFactory(as: Int*) : List[Int] = {
     // redundant but proving an idea about why foldRight is so generic.

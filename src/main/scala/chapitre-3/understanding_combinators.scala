@@ -12,6 +12,6 @@ val combiner : (Int => Int, Int) => Int => Int = (c : Int => Int, a: Int) => (b:
 // So here we see use of these:
 val c1 = combiner(ident, 1)
 val c2 = combiner(c1, 10)
- 
+
 c2(0)
 }
