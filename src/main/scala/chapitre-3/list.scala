@@ -16,6 +16,10 @@ object List {
   def foldLeftViaFoldRight_NoReverse[A,B](ls: List[A], z:B)(f: (B, A) => B) : B =
     foldRight(ls, (b:B) => b)((a, g) => b => g(f(b, a))) (z)
 
+  def flatten[A](lls: List[List[A]]) :List[A] = {
+    foldLeft(lls, Nil:List[A])(appendFoldLeft)
+  }
+
 
   // The goal is a function like this (et: Int) => Cons( 1, Cons(2, Cons(et, Nil)))
   def appendFoldLeft[A](ls: List[A], rs: List[A]): List[A] = {
@@ -32,7 +36,8 @@ object List {
     foldRight(ls, rs)(Cons(_, _))
   }
 
-  def foldRightViaFoldLeft[A, B](ls: List[A], z: B)(f: (A, B) => B) : B =  foldLeft(reverse(ls), z)((acc, h) => f(h, acc))
+  def foldRightViaFoldLeft[A, B](ls: List[A], z: B)(f: (A, B) => B) : B = 
+    foldLeft(reverse(ls), z)((acc, h) => f(h, acc))
 
   // From the author's site.
   def foldRightViaFoldLeft_NoReverse[A,B](ls: List[A], z: B)(f: (A,B) => B): B = 
