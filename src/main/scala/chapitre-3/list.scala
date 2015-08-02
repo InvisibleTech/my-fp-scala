@@ -20,6 +20,7 @@ object List {
     foldLeft(lls, Nil:List[A])(appendFoldLeft)
   }
 
+  def add1(l : List[Int]) : List[Int] = foldRight(l, Nil:List[Int])((h, t) => Cons(h + 1, t))
 
   // The goal is a function like this (et: Int) => Cons( 1, Cons(2, Cons(et, Nil)))
   def appendFoldLeft[A](ls: List[A], rs: List[A]): List[A] = {
@@ -68,8 +69,8 @@ object List {
   @annotation.tailrec
   def drop[A](l: List[A], n: Int): List[A] = l match {
     case Nil => Nil
-    case _ if n == 0 => l
-    case Cons(h, t) if n > 0 => drop(t, n -1)
+    case _ if n <= 0 => l
+    case Cons(_, t) if n > 0 => drop(t, n -1)
   }
 
 
