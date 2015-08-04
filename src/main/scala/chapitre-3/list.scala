@@ -24,6 +24,8 @@ object List {
 
   def doubleToString(l: List[Double]) : List[String] = foldRight(l, Nil:List[String])((h, t) => Cons(h.toString, t))
 
+  def map[A,B](l: List[A])(f: A => B): List[B] = foldRight(l, Nil:List[B])((h, t) => Cons(f(h), t))
+
   // The goal is a function like this (et: Int) => Cons( 1, Cons(2, Cons(et, Nil)))
   def appendFoldLeft[A](ls: List[A], rs: List[A]): List[A] = {
     foldLeft(ls, (b:List[A]) => b)((g, a) => b => g(Cons(a, b))) (rs) 
