@@ -22,6 +22,8 @@ object List {
 
   def add1(l : List[Int]) : List[Int] = foldRight(l, Nil:List[Int])((h, t) => Cons(h + 1, t))
 
+  def doubleToString(l: List[Double]) : List[String] = foldRight(l, Nil:List[String])((h, t) => Cons(h.toString, t))
+
   // The goal is a function like this (et: Int) => Cons( 1, Cons(2, Cons(et, Nil)))
   def appendFoldLeft[A](ls: List[A], rs: List[A]): List[A] = {
     foldLeft(ls, (b:List[A]) => b)((g, a) => b => g(Cons(a, b))) (rs) 
