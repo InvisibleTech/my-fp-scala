@@ -26,6 +26,14 @@ object List {
 
   def map[A,B](l: List[A])(f: A => B): List[B] = foldRight(l, Nil:List[B])((h, t) => Cons(f(h), t))
 
+  def filter[A](ls: List[A])(f: (A) => Boolean) : List[A] = {
+    ls match {
+      case Nil => Nil
+      case Cons(h, t) if f(h) => Cons(h, filter(t)(f))
+      case Cons(_, t) => filter(t)(f)
+    }
+  }
+
   // The goal is a function like this (et: Int) => Cons( 1, Cons(2, Cons(et, Nil)))
   def appendFoldLeft[A](ls: List[A], rs: List[A]): List[A] = {
     foldLeft(ls, (b:List[A]) => b)((g, a) => b => g(Cons(a, b))) (rs) 
