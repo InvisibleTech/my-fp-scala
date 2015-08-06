@@ -16,7 +16,7 @@ object List {
   def foldLeftViaFoldRight_NoReverse[A,B](ls: List[A], z:B)(f: (B, A) => B) : B =
     foldRight(ls, (b:B) => b)((a, g) => b => g(f(b, a))) (z)
 
-  def flatten[A](lls: List[List[A]]) :List[A] = {
+  def concat[A](lls: List[List[A]]) :List[A] = {
     foldLeft(lls, Nil:List[A])(appendFoldLeft)
   }
 
@@ -32,6 +32,14 @@ object List {
       case Cons(h, t) if f(h) => Cons(h, filter(t)(f))
       case Cons(_, t) => filter(t)(f)
     }
+  }
+
+  def flatMap[A,B](l: List[A])(f: A => List[B]): List[B] = {
+    concat(map(l)(f))
+  }
+
+  def flatFilter[A](ls: List[A])(f: A => Boolean) : List[A] = {
+    flatMap(ls)((x: A) => if (f(x)) List(x) else Nil)
   }
 
   // The goal is a function like this (et: Int) => Cons( 1, Cons(2, Cons(et, Nil)))

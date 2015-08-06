@@ -49,4 +49,28 @@ class ListSpec extends FlatSpec with Matchers {
 
     filteredList should be(List(10, 10))
   }
+
+  "List.flatMap" should "return a list that is flattened at the first level" in {
+    val flattened = List.flatMap(List(List(1, 2, 3), List(1, 33, 44)))((x:List[Int]) => x)
+
+    flattened should be(List(1, 2, 3, 1, 33, 44))
+  }
+
+  "List.flatFilter" should "should return Nil for Nil" in {
+    val filteredList: List[Int] = List.flatFilter(Nil:List[Int])(_ != 0)
+
+    filteredList should be(Nil)
+  }
+
+  "List.flatFilter" should "should return Nil for list that is completely filtered" in {
+    val filteredList: List[Int] = List.flatFilter(List(0, 0, 0))(_ != 0)
+
+    filteredList should be(Nil)
+  }
+
+  "List.flatFilter" should "should return List that has been fitered" in {
+    val filteredList: List[Int] = List.flatFilter(List(10, 0, 10))(_ != 0)
+
+    filteredList should be(List(10, 10))
+  }
 }
