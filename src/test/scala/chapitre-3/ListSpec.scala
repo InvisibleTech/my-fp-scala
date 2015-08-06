@@ -73,4 +73,16 @@ class ListSpec extends FlatSpec with Matchers {
 
     filteredList should be(List(10, 10))
   }
+
+  "List.zipWith" should "should return a List that was zipped using additon given two lists of Ints" in {
+    val z: List[Int] = List.zipWith(List(1, 2, 3), List(6, 5, 4))(_ + _)
+
+    z should be(List(7, 7, 7))
+  }
+
+  "List.zipWith" should "should return a List that was zipped List() for List of Int and List of String" in {
+    val z: List[(Int, String)] = List.zipWith(List(1, 2, 3), List("f", "dog", "hh"))((_, _))
+
+    z should be(List((1, "f"), (2, "dog"), (3, "hh")))
+  }
 }

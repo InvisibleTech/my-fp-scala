@@ -42,6 +42,14 @@ object List {
     flatMap(ls)((x: A) => if (f(x)) List(x) else Nil)
   }
 
+  def zipWith[A,B,C](l: List[A], r: List[B])(f: (A, B) => C) : List[C] = {
+    (l, r) match {
+      case (_, Nil) => Nil
+      case (Nil, _) => Nil
+      case (Cons(lh, lt), Cons(rh, rt)) => Cons(f(lh, rh), zipWith(lt, rt)(f)) 
+    }
+  }
+
   // The goal is a function like this (et: Int) => Cons( 1, Cons(2, Cons(et, Nil)))
   def appendFoldLeft[A](ls: List[A], rs: List[A]): List[A] = {
     foldLeft(ls, (b:List[A]) => b)((g, a) => b => g(Cons(a, b))) (rs) 
