@@ -50,13 +50,22 @@ object List {
     }
   }
 
-@annotation.tailrec
-  def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = {
+  @annotation.tailrec
+  def startsWith[A](sup: List[A], sub: List[A]) : Boolean = {
+    
     (sup, sub) match {
-      case (Nil, Cons(_, _)) => false
       case (_, Nil) => true
-      case (Cons(supH, supT), Cons(subH, subT)) if (supH == subH) => hasSubsequence(supT, subT)
-      case (Cons(supH, supT), sub) => hasSubsequence(supT, sub)
+      case (Cons(supH, supT), Cons(subH, subT)) if (supH == subH) => startsWith(supT, subT)
+      case (_, Cons(_, _)) => false
+    }
+  }
+
+  @annotation.tailrec
+  def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = {
+      sup match {
+      case Nil => sub == Nil
+      case _ if (startsWith(sup, sub)) => true
+      case Cons(h, t) => hasSubsequence(t, sub)
     }
   }
 

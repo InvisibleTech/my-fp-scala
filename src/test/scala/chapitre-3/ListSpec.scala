@@ -90,7 +90,6 @@ class ListSpec extends FlatSpec with Matchers {
     List.hasSubsequence(Nil, Nil) should be (true)
   }
 
-
   "List.hasSubsequence" should "return true when both sublist is Nil" in  {
     List.hasSubsequence(List(9, 14), Nil) should be (true)
   }
@@ -99,23 +98,23 @@ class ListSpec extends FlatSpec with Matchers {
     List.hasSubsequence(List(9, 14), List(9, 14)) should be (true)
   }
 
-  "List.hasSubsequence" should "return true when both sub list is a prefix" in  {
+  "List.hasSubsequence" should "return true when sub list is a prefix" in  {
     List.hasSubsequence(List(9, 14, 100), List(9, 14)) should be (true)
   }
 
-  "List.hasSubsequence" should "return true when both sub list is a suffix" in  {
+  "List.hasSubsequence" should "return true when sub list is a suffix" in  {
     List.hasSubsequence(List(9, 50, 100, 9, 9, 14), List(9, 14)) should be (true)
   }
 
-  "List.hasSubsequence" should "return true when both sub list is an infix" in  {
+  "List.hasSubsequence" should "return true when sub list is an infix" in  {
     List.hasSubsequence(List(30, 50, 100, 9, 14, 50, 66, -10, 44), List(9, 14, 50)) should be (true)
   }
 
-  "List.hasSubsequence" should "return true when both sub list is an infix and there's a partial match too" in  {
+  "List.hasSubsequence" should "return true when sub list is an infix and there's a partial match too" in  {
     List.hasSubsequence(List(30, 50, 9, 14, 100, 9, 14, 50, 66, -10, 44), List(9, 14, 50)) should be (true)
   }
 
-  "List.hasSubsequence" should "return false when both sub list is not an infix but there's a partial match too" in  {
-    List.hasSubsequence(List(30, 50, 9, 14, 100, 99, 14, 50, 66, -10, 44), List(9, 14, 50)) should be (true)
+  "List.hasSubsequence" should "return false when sub list is not an infix but there's a partial match too" in  {
+    List.hasSubsequence(List(30, 50, 9, 14, 100, 99, 14, 50, 66, -10, 44), List(9, 14, 50)) should be (false)
   }
 }
