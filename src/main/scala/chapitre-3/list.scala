@@ -50,6 +50,16 @@ object List {
     }
   }
 
+@annotation.tailrec
+  def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = {
+    (sup, sub) match {
+      case (Nil, Cons(_, _)) => false
+      case (_, Nil) => true
+      case (Cons(supH, supT), Cons(subH, subT)) if (supH == subH) => hasSubsequence(supT, subT)
+      case (Cons(supH, supT), sub) => hasSubsequence(supT, sub)
+    }
+  }
+
   // The goal is a function like this (et: Int) => Cons( 1, Cons(2, Cons(et, Nil)))
   def appendFoldLeft[A](ls: List[A], rs: List[A]): List[A] = {
     foldLeft(ls, (b:List[A]) => b)((g, a) => b => g(Cons(a, b))) (rs) 
