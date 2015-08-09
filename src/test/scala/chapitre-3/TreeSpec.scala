@@ -72,4 +72,13 @@ class TreeSpec extends FlatSpec with Matchers {
   "max" should "return 5000 for a balanced tree with inner value of 5000" in {
     Tree.max(Branch(Branch(Branch(Leaf(0), Leaf(100)), Branch(Leaf(-5), Leaf(-100))), Branch(Branch(Leaf(665), Leaf(5000)), Branch(Leaf(-50), Leaf(300))))) shouldBe (5000)
   }
+
+  "depth" should "return 3 for a balanced tree with a maximum of 3 branches and a leaf" in {
+    Tree.depth(Branch(Branch(Branch(Leaf(5.4), Leaf(100.4)), Branch(Leaf(-5.4), Leaf(-100.4))), Branch(Branch(Leaf(665.4), Leaf(1009.4)), Branch(Leaf(-50.4), Leaf(10.4))))) shouldBe (3)
+  }
+
+  "depth" should "return 3 for an imbalanced tree with a maximum of 3 branches and a leaf" in {
+    Tree.depth(Branch(Branch(Leaf(5.4), Leaf(-100.4)), Branch(Leaf(-50.4), Branch(Leaf(-5.4), Leaf(-100.4))))) shouldBe (3)
+  }
+
 }
