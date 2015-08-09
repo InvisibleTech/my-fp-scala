@@ -57,4 +57,19 @@ class TreeSpec extends FlatSpec with Matchers {
     Tree.size(Branch(Branch(Branch(Leaf(5.4), Leaf(100.4)), Branch(Leaf(-5.4), Leaf(-100.4))), Branch(Branch(Leaf(665.4), Leaf(1009.4)), Branch(Leaf(-50.4), Leaf(10.4))))) shouldBe (15)
   }
 
+  "max" should "return 1 for a one level tree with all 1s" in {
+    Tree.max(Branch(Leaf(1), Leaf(1))) shouldBe (1)
+  }
+
+  "max" should "return 5000 for a balanced tree with leftmost value of 5000" in {
+    Tree.max(Branch(Branch(Branch(Leaf(5000), Leaf(100)), Branch(Leaf(-5), Leaf(-100))), Branch(Branch(Leaf(665), Leaf(1009)), Branch(Leaf(-50), Leaf(10))))) shouldBe (5000)
+  }
+
+  "max" should "return 5000 for a balanced tree with rightmost value of 5000" in {
+    Tree.max(Branch(Branch(Branch(Leaf(0), Leaf(100)), Branch(Leaf(-5), Leaf(-100))), Branch(Branch(Leaf(665), Leaf(1009)), Branch(Leaf(-50), Leaf(5000))))) shouldBe (5000)
+  }
+
+  "max" should "return 5000 for a balanced tree with inner value of 5000" in {
+    Tree.max(Branch(Branch(Branch(Leaf(0), Leaf(100)), Branch(Leaf(-5), Leaf(-100))), Branch(Branch(Leaf(665), Leaf(5000)), Branch(Leaf(-50), Leaf(300))))) shouldBe (5000)
+  }
 }
