@@ -81,4 +81,7 @@ class TreeSpec extends FlatSpec with Matchers {
     Tree.depth(Branch(Branch(Leaf(5.4), Leaf(-100.4)), Branch(Leaf(-50.4), Branch(Leaf(-5.4), Leaf(-100.4))))) shouldBe (3)
   }
 
+  "map" should "return a tree of unmodified Leaves gievn an identity" in {
+    Tree.map(Branch(Leaf("a"), Branch(Leaf("b"), Branch(Leaf("g"), Leaf("h")))))((x) => x) shouldBe (Branch(Leaf("a"), Branch(Leaf("b"), Branch(Leaf("g"), Leaf("h")))))
+  }
 }
