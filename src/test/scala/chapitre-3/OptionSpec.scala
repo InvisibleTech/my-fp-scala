@@ -24,4 +24,14 @@ class OptionSpec extends FlatSpec with Matchers {
 
     Some(10).filter(_ < 11) shouldBe (Some(10))
   }
+
+  "map" should "return None if given None" in {
+    val o: Option[Int] = None 
+    o.map(_ * 2)  shouldBe(None)
+  }
+
+  "map" should "return Option with moded value if given None" in {
+    val o: Option[Int] = Some(10) 
+    o.map(_ * 2)  shouldBe(Some(20))
+  }
 }
