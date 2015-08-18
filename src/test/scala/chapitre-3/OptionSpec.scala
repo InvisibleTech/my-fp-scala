@@ -41,4 +41,14 @@ class OptionSpec extends FlatSpec with Matchers {
   "getOrElse" should "return value if we Some" in {
     Some("Woof").getOrElse("Meowwwww") shouldBe("Woof")
   }
+
+  "flatMap" should "return None if given None" in {
+    val o: Option[Int] = None 
+    o.flatMap((x :Int) => Some(x * 2))  shouldBe(None)
+  }
+
+  "flatMap" should "return Some with mods if given Some" in {
+    Some(9).flatMap((x :Int) => Some(x * 2))  shouldBe(Some(18))
+  }
+
 }
