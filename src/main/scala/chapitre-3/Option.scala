@@ -17,6 +17,8 @@ sealed trait Option[+A] {
   }
 
   def flatMap[B](f: A => Option[B]) : Option[B] = map(f) getOrElse None
+
+  def orElse[B >: A](ob: => Option[B]) : Option[B] = map(Some(_)) getOrElse ob
 }
 
 case class Some[+A](get: A) extends Option[A]

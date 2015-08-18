@@ -51,4 +51,12 @@ class OptionSpec extends FlatSpec with Matchers {
     Some(9).flatMap((x :Int) => Some(x * 2))  shouldBe(Some(18))
   }
 
+  "orElse" should "return default if given None" in {
+    val o: Option[Int] = None 
+    None.orElse(Some(100))  shouldBe(Some(100))
+  }
+
+  "orElse" should "return this if Some" in {
+    Some(422).orElse(Some(100))  shouldBe(Some(422))
+  }
 }
