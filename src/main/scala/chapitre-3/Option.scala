@@ -27,6 +27,8 @@ sealed trait Option[+A] {
   def variance(xs: Seq[Double]) : Option[Double] ={
     mean(xs) flatMap (m => mean(xs.map((x:Double) => math.pow(x - m , 2))))
   }
+
+  def lift[A,B](f: A => B): Option[A] => Option[B] = _ map f  
 }
 
 case class Some[+A](get: A) extends Option[A]
