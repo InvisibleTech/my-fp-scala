@@ -11,5 +11,5 @@ libraryDependencies ++= Seq(
   "org.scalacheck" % "scalacheck_2.11" % "1.12.3" % "test" withSources() withJavadoc()
 )
 
-initialCommands := "import org.invisibletech.myfpscala._"
+initialCommands := ""
 
