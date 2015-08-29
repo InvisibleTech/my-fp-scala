@@ -3,6 +3,30 @@ package org.invisibletech.myfpscala.errorhandling
 import scala.{ Option => _, Either => _, _ }
 
 object Option {
+
+  // Got to the point with this one where I had the right sequence of opts 
+  // and some kind of maps.  What I struggled with here was how to get
+  // rid of a compiler error due to f's return type.  I looked at flatMap but 
+  // didn't make the connection until I got to considering using a case statement
+  // and decided to look at the author's answer.  Which was using flatMap. Doh!
+  def map2[A, B, C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] = {
+    a flatMap (av => b map (bv => f(av, bv)))
+  }
+
+  // After dissecting the author's solution for sequence (recursive), I was able to muddle my way to this. Had
+  // issues with Scala type inferecing for "z"  value Some(List[A]()), it had to be forced to Option[List[A]].
+  // At first I tried using .asInstanceOf which worked.  I saw the author hit the same issue and instead used
+  // type specification of foldRight.
+  def sequenceByFold[A](a: List[Option[A]]): Option[List[A]] = {
+    a.foldRight[Option[List[A]]](Some(List[A]()))((h, acc) => h flatMap (hh => acc map (hh :: _)))
+  }
+
+  // I noticed the author's version used map2.  Now look at my code I see why.  map2, so I will try to translate
+  // my code above to use it.
+  def sequenceByFoldMap2[A](a: List[Option[A]]): Option[List[A]] = {
+    a.foldRight[Option[List[A]]](Some(Nil)) (map2(_, _)((x, y) => (x :: y)))
+  }
+
   def sequence[A](a: List[Option[A]]): Option[List[A]] = a match {
     case Nil => Some(Nil)
     case h :: t => h flatMap (hh => sequence(t) map (hh :: _))
@@ -19,8 +43,8 @@ object Option {
   // via List and the control flow between map and the conversion function fed in to flatMap. 
   //
   def sequence_verbose[A](a: List[Option[A]]): Option[List[A]] = a match {
-    case Nil => {println("End of List ===>");  Some(Nil)}
-    case h :: t =>{println(s"recurse h ==> $h"); h flatMap (hh => {println(s"applying map to hh ==> $hh"); sequence(t) map (hh :: _)})}
+    case Nil => { println("End of List ===>"); Some(Nil) }
+    case h :: t => { println(s"recurse h ==> $h"); h flatMap (hh => { println(s"applying map to hh ==> $hh"); sequence(t) map (hh :: _) }) }
   }
 
   // Figuring out the flow of control for sequence:
@@ -54,15 +78,6 @@ object Option {
   // rule then is None short circuits recursion process and forces return up chain early with None.
   //
 
-
-  // Got to the point with this one where I had the right sequence of opts 
-  // and some kind of maps.  What I struggled with here was how to get
-  // rid of a compiler error due to f's return type.  I looked at flatMap but 
-  // didn't make the connection until I got to considering using a case statement
-  // and decided to look at the author's answer.  Which was using flatMap. Doh!
-  def map2[A, B, C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] = {
-    a flatMap (av => b map (bv => f(av, bv)))
-  }
 }
 
 sealed trait Option[+A] {
