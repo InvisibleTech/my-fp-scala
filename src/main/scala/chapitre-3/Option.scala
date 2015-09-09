@@ -1,8 +1,31 @@
 package org.invisibletech.myfpscala.errorhandling
 
 import scala.{ Option => _, Either => _, _ }
+import scala.{ Some => _}
+
+import scala.util._
 
 object Option {
+
+  def _2Int(s: String) : Option[Int] = {
+    Try(s.toInt) match {
+      case Success(x) => Some(x)
+      case Failure(_) => None
+    }
+  }
+
+  // Again with some help from author.. mostly I was lazy on this one.
+  def traverse[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] = {
+    a match {
+      case Nil => Some(Nil)
+      case h :: t =>  map2(f(h), traverse(t)(f))(_ :: _)
+    }
+  }
+
+  // This one I did from my own Sequence using foldRight as a model.
+  def traverseFoldRight[A,B](a: List[A])(f: A => Option[B]): Option[List[B]] = {
+    a.foldRight[Option[List[B]]](Some(List[B]()))((h, acc) => f(h) flatMap (hh => acc map (hh :: _)))
+  }
 
   // Got to the point with this one where I had the right sequence of opts 
   // and some kind of maps.  What I struggled with here was how to get
